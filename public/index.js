@@ -146,60 +146,30 @@ const actors = [{
   }]
 }];
 
-
 console.log(bars);
 console.log(events);
 console.log(actors);
 
+function updateBookingPrice(){
+  for(var i=0; i < events.length; i++){
+    var idBar = events[i].barId;
+    var nbPers = events[i].persons;
+    var time = events[i].time;
 
-function bookingPrice(events, bars){
+    events[i].price = computeBookingPrice(nbPers, time, idBar);
+  }
+}
 
-  var time;
-  var persons;
-  var idBar;
-  var idEvent;
-
-  var pricePerHour;
-  var pricePerPerson;
-
+function computeBookingPrice(nbPers, time, idBar){
   var bookingPrice = 0;
 
-  for(var i = 0; i < events.length; i++){
-     time = events[i].time;
-     persons = events[i].persons;
-     idBar = events[i].barId;
-     idEvent = events[i].id;
-
-    for(var j=0; j < bars.length; j++){
-      if(bars[j].id == idBar){
-         pricePerHour = bars[j].pricePerHour;
-         pricePerPerson = bars[j].pricePerPerson;
-      }
-
-      if (persons > 10){
-        pricePerHour = pricePerHour - pricePerHour * 0.1;
-        pricePerPerson = pricePerPerson - pricePerPerson * 0.1;
-      }
-      if (persons > 20){
-        pricePerHour = pricePerHour - pricePerHour * 0.3;
-        pricePerPerson = pricePerPerson - pricePerPerson * 0.3;
-      }
-      if(persons > 60){
-        pricePerHour = pricePerHour - pricePerHour * 0.5;
-        pricePerPerson = pricePerPerson - pricePerPerson * 0.5;
-      }
-    }
-
-    var bookingPrice = time * pricePerHour + persons * pricePerPerson;
-
-    for(var k=0; k < events.length; k++){
-      if(events[k].id == idEvent){
-        events[k].price = bookingPrice;
-      }
+  for(var i = 0; i <bars.length; i++){
+    if(bars[i].id == idBar){
+      bookingPrice = time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson;
     }
   }
 
   return bookingPrice;
 }
 
-bookingPrice(events, bars);
+updateBookingPrice();
