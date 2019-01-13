@@ -150,19 +150,24 @@ console.log(bars);
 console.log(events);
 console.log(actors);
 
-function updateBookingPrice(){
+function updateEventsInfo(){
   for(var i=0; i < events.length; i++){
     var idBar = events[i].barId;
     var nbPers = events[i].persons;
     var time = events[i].time;
 
     events[i].price = computeBookingPrice(nbPers, time, idBar);
+
+    events[i].insurance = computeBookingPrice(nbPers, time, idBar) / 2;
+    events[i].treasury = nbPers;
+    events[i].privateaser = (computeBookingPrice(nbPers, time, idBar) / 2) - nbPers;
+
   }
 }
 
 function computeBookingPrice(nbPers, time, idBar){
   var bookingPrice = 0;
-  var pourcentage = 1;
+  var pourcentage = 0;
 
   if(nbPers >60){
     pourcentage = 0.5;
@@ -176,7 +181,6 @@ function computeBookingPrice(nbPers, time, idBar){
 
   for(var i = 0; i <bars.length; i++){
     if(bars[i].id == idBar){
-      console.log(pourcentage);
       bookingPrice = time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson - (time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson) * pourcentage;
     }
   }
@@ -184,4 +188,4 @@ function computeBookingPrice(nbPers, time, idBar){
   return bookingPrice;
 }
 
-updateBookingPrice();
+updateEventsInfo();
