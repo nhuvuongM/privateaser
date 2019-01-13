@@ -146,6 +146,7 @@ const actors = [{
   }]
 }];
 
+
 console.log(bars);
 console.log(events);
 console.log(actors);
@@ -174,7 +175,21 @@ function bookingPrice(events, bars){
          pricePerHour = bars[j].pricePerHour;
          pricePerPerson = bars[j].pricePerPerson;
       }
+
+      if (persons > 10){
+        pricePerHour = pricePerHour - pricePerHour * 0.1;
+        pricePerPerson = pricePerPerson - pricePerPerson * 0.1;
+      }
+      if (persons > 20){
+        pricePerHour = pricePerHour - pricePerHour * 0.3;
+        pricePerPerson = pricePerPerson - pricePerPerson * 0.3;
+      }
+      if(persons > 60){
+        pricePerHour = pricePerHour - pricePerHour * 0.5;
+        pricePerPerson = pricePerPerson - pricePerPerson * 0.5;
+      }
     }
+
     var bookingPrice = time * pricePerHour + persons * pricePerPerson;
 
     for(var k=0; k < events.length; k++){
@@ -186,6 +201,5 @@ function bookingPrice(events, bars){
 
   return bookingPrice;
 }
-
 
 bookingPrice(events, bars);
