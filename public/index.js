@@ -162,10 +162,22 @@ function updateBookingPrice(){
 
 function computeBookingPrice(nbPers, time, idBar){
   var bookingPrice = 0;
+  var pourcentage = 1;
+
+  if(nbPers >60){
+    pourcentage = 0.5;
+  }
+  else if (nbPers > 20) {
+    pourcentage = 0.3;
+  }
+  else if (nbPers > 10) {
+    pourcentage = 0.1;
+  }
 
   for(var i = 0; i <bars.length; i++){
     if(bars[i].id == idBar){
-      bookingPrice = time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson;
+      console.log(pourcentage);
+      bookingPrice = time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson - (time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson) * pourcentage;
     }
   }
 
