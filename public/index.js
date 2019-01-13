@@ -146,6 +146,7 @@ const actors = [{
   }]
 }];
 
+
 console.log(bars);
 console.log(events);
 console.log(actors);
@@ -155,13 +156,18 @@ function updateEventsInfo(){
     var idBar = events[i].barId;
     var nbPers = events[i].persons;
     var time = events[i].time;
+    var deduc = events[i].options.deductibleReduction;
 
     events[i].price = computeBookingPrice(nbPers, time, idBar);
 
-    events[i].insurance = computeBookingPrice(nbPers, time, idBar) / 2;
-    events[i].treasury = nbPers;
-    events[i].privateaser = (computeBookingPrice(nbPers, time, idBar) / 2) - nbPers;
+    events[i].commission.insurance = computeBookingPrice(nbPers, time, idBar) / 2;
+    events[i].commission.treasury = nbPers;
+    events[i].commission.privateaser = (computeBookingPrice(nbPers, time, idBar) / 2) - nbPers;
 
+    if(deduc){
+      events[i].price = events[i].price + nbPers;
+      events[i].commission.privateaser += nbPers;
+    }
   }
 }
 
