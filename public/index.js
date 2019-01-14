@@ -147,10 +147,6 @@ const actors = [{
 }];
 
 
-console.log(bars);
-console.log(events);
-console.log(actors);
-
 function updateEventsInfo(){
   for(var i=0; i < events.length; i++){
     var idBar = events[i].barId;
@@ -160,9 +156,11 @@ function updateEventsInfo(){
 
     events[i].price = computeBookingPrice(nbPers, time, idBar);
 
-    events[i].commission.insurance = computeBookingPrice(nbPers, time, idBar) / 2;
+    var commission = events[i].price - events[i].price * 0.3;
+
+    events[i].commission.insurance =  commission / 2;
     events[i].commission.treasury = nbPers;
-    events[i].commission.privateaser = (computeBookingPrice(nbPers, time, idBar) / 2) - nbPers;
+    events[i].commission.privateaser = events[i].commission.insurance - nbPers;
 
     if(deduc){
       events[i].price = events[i].price + nbPers;
@@ -194,4 +192,27 @@ function computeBookingPrice(nbPers, time, idBar){
   return bookingPrice;
 }
 
+function payActors(){
+  for(var i=0; i < actors.length; i++){
+    var eventId = actors[i].eventId;
+
+    for(var j=0; j<events.length; j++){
+      if(eventId == events[j].id){
+
+        actors[i].payment[0].amount = events[j].price;
+        actors[i].payment[1].amount = events[j].price - events[j].commission.insurance - events[j].commission.treasury - events[j].commission.privateaser;
+        actors[i].payment[2].amount = events[j].commission.insurance;
+        actors[i].payment[3].amount = events[j].commission.treasury;
+        actors[i].payment[4].amount = events[j].commission.privateaser;
+      }
+    }
+  }
+}
+
+
+console.log(bars);
+console.log(events);
+console.log(actors);
+
 updateEventsInfo();
+payActors();
