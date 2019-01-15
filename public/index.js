@@ -185,7 +185,7 @@ function computeBookingPrice(nbPers, time, idBar){
 
   for(var i = 0; i <bars.length; i++){
     if(bars[i].id == idBar){
-      bookingPrice = time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson - (time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson) * pourcentage;
+      bookingPrice = time * bars[i].pricePerHour + nbPers * bars[i].pricePerPerson - (nbPers * bars[i].pricePerPerson) * pourcentage;
     }
   }
 
@@ -200,7 +200,7 @@ function payActors(){
       if(eventId == events[j].id){
 
         actors[i].payment[0].amount = events[j].price;
-        actors[i].payment[1].amount = events[j].price - events[j].commission.insurance - events[j].commission.treasury - events[j].commission.privateaser;
+        actors[i].payment[1].amount = events[j].price - events[j].price * 0.3;
         actors[i].payment[2].amount = events[j].commission.insurance;
         actors[i].payment[3].amount = events[j].commission.treasury;
         actors[i].payment[4].amount = events[j].commission.privateaser;
